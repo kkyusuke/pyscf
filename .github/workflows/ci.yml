@@ -42,9 +42,9 @@ jobs:
             bash -exc 'cat /etc/redhat-release && /opt/python/${{ matrix.pyver }}/bin/pip install --upgrade pip setuptools && \
             yum install -y epel-release && \
             dnf config-manager --enable epel && \
-            yum install -y openblas-devel gcc cmake curl libxc-devel libcint-devel xcfun-devel && \
+            yum install -y openblas-devel gcc cmake curl libxc-devel && \
             cd ./pyscf/lib && mkdir build && cd build && \
-            cmake -DBUILD_LIBXC=OFF -DBUILD_XCFUN=OFF -DBUILD_LIBCINT=OFF .. && \
+            cmake -DBUILD_LIBXC=OFF && \
             make -j2 && cd .. && rm -Rf build && cd ../.. && \
             pip install "numpy!=1.16,!=1.17" "scipy!=1.5" h5py pytest pytest-cov pytest-timer && \
             pip install pyberny geometric && \
