@@ -39,14 +39,14 @@ jobs:
       - name: Build Wheel
         run: |
             docker run --rm -v ${{ github.workspace }}:/src/pyscf:rw --workdir=/src/pyscf ${{ env.img }} \
-            bash -exc 'cat /etc/redhat-release && /opt/python/${{ matrix.pyver }}/bin/pip install --upgrade pip setuptools && \
+            bash -exc '/opt/python/${{ matrix.pyver }}/bin/pip install --upgrade pip setuptools && \
+            /opt/python/${{ matrix.pyver }}/bin/pip install "numpy!=1.16,!=1.17" "scipy!=1.5" h5py pytest pytest-cov pytest-timer pyberny geometric && \
+            ls /opt/python/${{ matrix.pyver }}/bin/ && \
             yum install -y epel-release && \
             yum-config-manager --enable epel && \
             yum install -y openblas-devel gcc cmake curl && \
             cd ./pyscf/lib && mkdir build && cd build && \
             cmake .. && \
             make -j2 && cd .. && rm -Rf build && cd ../.. && \
-            pip install "numpy!=1.16,!=1.17" "scipy!=1.5" h5py pytest pytest-cov pytest-timer && \
-            pip install pyberny geometric && \
             export OMP_NUM_THREADS=1 && export PYTHONPATH=$(pwd):$PYTHONPATH && \
-            ulimit -s 20000 && pytest pyscf/ -s -c setup.cfg --cov-report xml --cov-report term --cov-config .coveragerc --cov pyscf'
+            ulimit -s 20000 && /opt/python/${{ matrix.pyver }}/bin/pytest pyscf/ -s -c setup.cfg --cov-report xml --cov-report term --cov-config .coveragerc --cov pyscf'
