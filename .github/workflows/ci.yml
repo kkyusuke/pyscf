@@ -45,8 +45,9 @@ jobs:
             yum install -y epel-release && \
             yum-config-manager --enable epel && \
             yum install -y openblas-devel gcc cmake curl && \
-            cd ./pyscf/lib && mkdir build && cd build && \
-            cmake .. && \
+            cd ./pyscf/lib && curl -L "https://github.com/kkyusuke/pyscf-build-deps/blob/master/pyscf-2.1a-aarch64-deps.tar.gz?raw=true" | tar xzf - & \　
+            mkdir build && cd build && \
+            cmake -DBUILD_LIBXC=OFF -DBUILD_XCFUN=OFF -DBUILD_LIBCINT=OFF .. && \
             make -j2 && cd .. && rm -Rf build && cd ../.. && \
             export OMP_NUM_THREADS=1 && export PYTHONPATH=$(pwd):$PYTHONPATH && \
             ulimit -s 20000 && /opt/python/${{ matrix.pyver }}/bin/pytest pyscf/ -s -c setup.cfg --cov-report xml --cov-report term --cov-config .coveragerc --cov pyscf'
