@@ -45,7 +45,7 @@ jobs:
             yum install -y epel-release && \
             yum-config-manager --enable epel && \
             yum install -y openblas-devel gcc cmake curl && \
-            cd ./pyscf/lib && curl -L "https://github.com/kkyusuke/pyscf-build-deps/blob/master/pyscf-2.1a-aarch64-deps.tar.gz?raw=true" | tar xzf - & \　
+            cd ./pyscf/lib && curl -L "https://github.com/kkyusuke/pyscf-build-deps/blob/master/pyscf-2.1a-aarch64-deps.tar.gz?raw=true" | tar xzf - && \　
             mkdir build && cd build && \
             cmake -DBUILD_LIBXC=OFF -DBUILD_XCFUN=OFF -DBUILD_LIBCINT=OFF .. && \
             make -j2 && cd .. && rm -Rf build && cd ../.. && \
