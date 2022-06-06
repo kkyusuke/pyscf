@@ -41,11 +41,11 @@ jobs:
             docker run --rm -v ${{ github.workspace }}:/src/pyscf:rw --workdir=/src/pyscf ${{ env.img }} \
             bash -exc '/opt/python/${{ matrix.pyver }}/bin/pip install --upgrade pip setuptools && \
             /opt/python/${{ matrix.pyver }}/bin/pip install "numpy!=1.16,!=1.17" "scipy!=1.5" h5py pytest pytest-cov pytest-timer pyberny geometric && \
-            ls /opt/python/${{ matrix.pyver }}/bin/ && \
             yum install -y epel-release && \
             yum-config-manager --enable epel && \
             yum install -y openblas-devel gcc cmake curl && \
-            cd ./pyscf/lib && curl -L "https://github.com/kkyusuke/pyscf-build-deps/blob/master/pyscf-2.1a-aarch64-deps.tar.gz?raw=true" | tar xzf - && \　
+            cd ./pyscf/lib && curl -O -L "https://github.com/kkyusuke/pyscf-build-deps/blob/master/pyscf-2.1a-aarch64-deps.tar.gz?raw=true"  && \
+            tar xzf pyscf-2.1a-aarch64-deps.tar.gz && \
             mkdir build && cd build && \
             cmake -DBUILD_LIBXC=OFF -DBUILD_XCFUN=OFF -DBUILD_LIBCINT=OFF .. && \
             make -j2 && cd .. && rm -Rf build && cd ../.. && \
