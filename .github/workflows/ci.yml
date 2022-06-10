@@ -29,7 +29,7 @@ jobs:
         os: [ubuntu-20.04]
         #pyver: [cp36-cp36m, cp37-cp37m, cp38-cp38, cp39-cp39]
         pyver: [cp38-cp38]
-        dir: [adc, agf2, ao2mo, cc, ci, data, df, dft, eph, fci, geomopt, grad, gto, gw, hessian, lib, lo, mcscf, mp, mrpt, pbc, qmmm, scf, sgx, solvent, soscf, symm, tddft, tdscf, tools, x2c]
+        dir: [adc, agf2, ao2mo, cc, ci, df, dft, eph, fci, geomopt, grad, gto, gw, hessian, lib, lo, mcscf, mp, mrpt, pbc, qmmm, scf, sgx, solvent, soscf, symm, tdscf, tools, x2c]
     env:
       img: quay.io/pypa/manylinux2014_aarch64
     steps:
@@ -51,4 +51,7 @@ jobs:
             cmake -DBUILD_LIBXC=OFF -DBUILD_XCFUN=OFF -DBUILD_LIBCINT=OFF .. && \
             make -j2 && cd .. && rm -Rf build && cd ../.. && \
             export OMP_NUM_THREADS=1 && export PYTHONPATH=$(pwd):$PYTHONPATH && \
-            ulimit -s 20000 && /opt/python/${{ matrix.pyver }}/bin/pytest pyscf/${{ matrix.dir }} -s -c setup.cfg --cov-report xml --cov-report term --cov-config .coveragerc --cov pyscf'
+            echo 'pbc_tools_pbc_fft_engine = "NUMPY"' > .pyscf_conf.py && \
+            echo "dftd3_DFTD3PATH = './pyscf/lib/deps/lib'" >> .pyscf_conf.py && \
+            echo "scf_hf_SCF_mute_chkfile = True" >> .pyscf_conf.py && \
+            ulimit -s 20000 && /opt/python/${{ matrix.pyver }}/bin/pytest pyscf/${{ matrix.dir }} --ignore=pyscf/adc --ignore=pyscf/pbc/df --ignore=pyscf/pbc/cc -s -c setup.cfg --cov-report xml --cov-report term --cov-config .coveragerc --cov pyscf'
