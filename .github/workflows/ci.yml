@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        pyver: [cp37-cp37m, cp38-cp38, cp39-cp39]
+        pyver: [cp37-cp37m, cp38-cp38, cp39-cp39, cp310-cp310]
     env:
       img: quay.io/pypa/manylinux2014_aarch64
     steps:
